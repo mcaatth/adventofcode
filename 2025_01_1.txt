@@ -1,0 +1,48 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <regex>
+
+int rotateLeft(int current, int shift) { 
+	return ( current + shift ) % 100;
+}
+
+// We asssume that shift is always between -100 and 100
+int rotateRight(int current, int shift) {
+	return (current + 100 - shift) % 100;
+}
+
+std::string getNumberFromGivenString(std::string input) {
+	std::string output = std::regex_replace(
+		input,
+		std::regex("[^0-9]*([0-9]+).*"),
+		std::string("$1")
+	);
+	return output;
+}
+
+int numberOfZeros() {
+	int n = 0;
+	int current = 50;
+
+	std::ifstream file("input.txt");
+	std::string str;
+
+	if (file.is_open()) {
+		while (std::getline(file, str)) {
+			if (str[0] == 'L') { current = rotateLeft(current, std::stoi(getNumberFromGivenString(str))); }
+			if (str[0] == 'R') { current = rotateRight(current, std::stoi(getNumberFromGivenString(str))); }
+			if (current == 0) { n++; }
+		}
+	} else {
+		std::cout << "Unable to open input file" << std:: endl;
+	}
+
+	return n;
+}
+
+int main()
+{
+	//for given test input it shall return number 3
+	std::cout << numberOfZeros();
+}
