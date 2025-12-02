@@ -1,0 +1,61 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <regex>
+
+int rotateRight(int current, int shift) {
+	return ( current + shift ) % 100;
+}
+
+int rotateLeft(int current, int shift) {
+	return (current + 100*shift - shift) % 100; // +100*shift to ensure whole number is positive
+}
+
+std::string getNumberFromGivenString(std::string input) {
+	std::string output = std::regex_replace(
+		input,
+		std::regex("[^0-9]*([0-9]+).*"),
+		std::string("$1")
+	);
+	return output;
+}
+
+int numberOfZeros() {
+	int n = 0;
+	int current = 50;
+	int currentInversed;
+	int shift = 0;
+	int nextPassedZeros = 0;
+
+	std::ifstream file("input.txt");
+	std::string str;
+
+	if (file.is_open()) {
+		while (std::getline(file, str)) {
+			if (str[0] == 'R') {
+				shift = std::stoi(getNumberFromGivenString(str));
+				nextPassedZeros = (current + shift) / 100;
+				n += nextPassedZeros;
+				current = rotateRight(current, shift);
+			}
+			if (str[0] == 'L') {
+				shift = std::stoi(getNumberFromGivenString(str));
+				// we teoretically inverse the dial knob for a moment and then rotate also right
+				currentInversed = (100 - current) % 100;
+				nextPassedZeros = (currentInversed + shift) / 100;
+				n += nextPassedZeros;
+				current = rotateLeft(current, shift);
+			}
+		}
+	} else {
+		std::cout << "Unable to open input file" << std:: endl;
+	}
+
+	return n;
+}
+
+int main()
+{
+	//for given test input it shall return number 6
+	std::cout << numberOfZeros();
+}
