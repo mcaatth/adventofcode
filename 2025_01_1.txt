@@ -3,13 +3,12 @@
 #include <string>
 #include <regex>
 
-int rotateLeft(int current, int shift) { 
+int rotateRight(int current, int shift) {
 	return ( current + shift ) % 100;
 }
 
-// We asssume that shift is always between -100 and 100
-int rotateRight(int current, int shift) {
-	return (current + 100 - shift) % 100;
+int rotateLeft(int current, int shift) {
+	return (current + 100*shift - shift) % 100; // +100*shift to ensure whole number is positive
 }
 
 std::string getNumberFromGivenString(std::string input) {
@@ -46,3 +45,4 @@ int main()
 	//for given test input it shall return number 3
 	std::cout << numberOfZeros();
 }
+
