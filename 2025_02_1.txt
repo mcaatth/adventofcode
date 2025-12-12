@@ -24,6 +24,7 @@ ulong mthPowerOfTen(ulong m)
 }
 
 // I took this function from the internet
+// it helps to print __int128 (not printable via cout)
 std::string toString(__int128 x) {
 	if (x == 0) return "0";
 	bool neg = false;
@@ -74,6 +75,7 @@ int main()
 
 	if (file.is_open()) {
 
+        // I don't like this repeated part
 		file >> firstNumberInRange;
 		file.get(ch);
 		file >> lastNumberInRange;
